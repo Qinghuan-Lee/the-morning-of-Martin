@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>我的 · 主题配色预览</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/dist/tabler-icons.min.css">
+<style>
+  :root{
+    --bg:#FAF6EF;
+    --surface:#FFFFFF;
+    --primary:#E1875A;
+    --primary-tint:#F6DCC3;
+    --primary-text:#8A4A22;
+    --secondary:#8D7FCB;
+    --secondary-tint:#E8E2F6;
+    --secondary-text:#4E4390;
+    --text-primary:#2B2621;
+    --text-secondary:#95897A;
+    --text-muted:#B7AD9E;
+    --border:#ECE4D6;
+    --shadow:rgba(43,38,33,0.08);
+    --font-serif:'Fraunces',serif;
+    --font-sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:#EDE7DC;font-family:var(--font-sans);display:flex;justify-content:center;padding:40px 16px;}
+  .phone{
+    width:390px;height:844px;background:var(--bg);border-radius:44px;
+    box-shadow:0 30px 60px rgba(43,38,33,0.18), 0 0 0 10px #1c1a17;
+    overflow:hidden;position:relative;display:flex;flex-direction:column;
+  }
+  .status{flex:none;display:flex;justify-content:space-between;align-items:center;padding:18px 26px 4px;font-size:13px;font-weight:600;color:var(--text-primary);}
+  .screen{flex:1 1 auto;overflow-y:auto;padding:6px 20px 10px;}
+  .header{padding:14px 2px 18px;}
+  .header h1{font-family:var(--font-serif);font-weight:600;font-size:32px;color:var(--text-primary);letter-spacing:-0.3px;}
+  .header p{margin-top:4px;font-size:13.5px;color:var(--text-secondary);}
+
+  .profile-card{
+    display:flex;align-items:center;gap:14px;
+    background:var(--surface);border-radius:20px;padding:16px 18px;
+    box-shadow:0 1px 4px var(--shadow);margin-bottom:8px;
+  }
+  .avatar{
+    width:48px;height:48px;border-radius:50%;
+    background:var(--primary-tint);color:var(--primary-text);
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-serif);font-size:19px;font-weight:600;
+    flex:none;
+  }
+  .profile-name{font-size:15px;font-weight:600;color:var(--text-primary);}
+  .profile-sub{font-size:12.5px;color:var(--text-secondary);margin-top:2px;}
+  .profile-card i.chev{margin-left:auto;color:var(--text-muted);font-size:16px;}
+
+  .section-label{font-size:12px;font-weight:600;letter-spacing:0.4px;color:var(--text-muted);text-transform:uppercase;margin:22px 0 10px 2px;}
+
+  .theme-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .theme-card{
+    background:var(--surface);border-radius:18px;padding:14px;
+    box-shadow:0 1px 4px var(--shadow);
+    position:relative;
+  }
+  .theme-card.selected{box-shadow:0 0 0 2px var(--primary);}
+  .theme-swatch{display:flex;gap:6px;margin-bottom:10px;}
+  .dot{width:18px;height:18px;border-radius:50%;}
+  .theme-name{font-size:13.5px;font-weight:600;color:var(--text-primary);}
+  .theme-desc{font-size:11.5px;color:var(--text-secondary);margin-top:2px;}
+  .theme-check{
+    position:absolute;top:10px;right:10px;
+    width:20px;height:20px;border-radius:50%;
+    background:var(--primary);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:12px;
+  }
+
+  .row-card{background:var(--surface);border-radius:18px;box-shadow:0 1px 4px var(--shadow);overflow:hidden;}
+  .setting-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);}
+  .setting-row:last-child{border-bottom:none;}
+  .setting-left{display:flex;align-items:center;gap:12px;}
+  .setting-left i{font-size:17px;color:var(--text-secondary);width:20px;text-align:center;}
+  .setting-name{font-size:14.5px;font-weight:600;color:var(--text-primary);}
+  .setting-value{font-size:13px;color:var(--text-muted);}
+  .setting-right{display:flex;align-items:center;gap:6px;color:var(--text-muted);}
+
+  .bottomnav{flex:none;display:flex;justify-content:space-around;padding:10px 8px 22px;background:var(--surface);}
+  .navitem{display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--text-muted);font-size:11px;font-weight:500;}
+  .navitem i{font-size:21px;}
+  .navitem.active{color:var(--primary-text);}
+  .navitem.active .navpill{background:var(--primary-tint);border-radius:12px;padding:4px 14px 2px;}
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="status"><span>10:24</span><span><i class="ti ti-wifi" aria-hidden="true"></i>&nbsp;<i class="ti ti-battery-4" aria-hidden="true"></i></span></div>
+  <div class="screen">
+    <div class="header"><h1>我的</h1><p>通用设置与主题</p></div>
+
+    <div class="profile-card">
+      <div class="avatar">M</div>
+      <div>
+        <div class="profile-name">Martin</div>
+        <div class="profile-sub">已收藏 128 首铃声</div>
+      </div>
+      <i class="ti ti-chevron-right chev" aria-hidden="true"></i>
+    </div>
+
+    <div class="section-label">主题配色</div>
+    <div class="theme-grid">
+      <div class="theme-card selected">
+        <div class="theme-check"><i class="ti ti-check" aria-hidden="true"></i></div>
+        <div class="theme-swatch">
+          <span class="dot" style="background:#E1875A;"></span>
+          <span class="dot" style="background:#8D7FCB;"></span>
+          <span class="dot" style="background:#FAF6EF;border:1px solid #ECE4D6;"></span>
+        </div>
+        <div class="theme-name">暖阳纸</div>
+        <div class="theme-desc">赤陶 × 薰衣紫（当前）</div>
+      </div>
+
+      <div class="theme-card">
+        <div class="theme-swatch">
+          <span class="dot" style="background:#5B84A8;"></span>
+          <span class="dot" style="background:#C98F6B;"></span>
+          <span class="dot" style="background:#F2F5F7;border:1px solid #E3E8EA;"></span>
+        </div>
+        <div class="theme-name">晨雾蓝</div>
+        <div class="theme-desc">雾蓝 × 暖沙棕</div>
+      </div>
+
+      <div class="theme-card">
+        <div class="theme-swatch">
+          <span class="dot" style="background:#6E8F5B;"></span>
+          <span class="dot" style="background:#B97D6B;"></span>
+          <span class="dot" style="background:#F4F3EA;border:1px solid #E7E4D6;"></span>
+        </div>
+        <div class="theme-name">森野绿</div>
+        <div class="theme-desc">苔绿 × 陶土棕</div>
+      </div>
+
+      <div class="theme-card">
+        <div class="theme-swatch">
+          <span class="dot" style="background:#6C63B5;"></span>
+          <span class="dot" style="background:#D98B6E;"></span>
+          <span class="dot" style="background:#F5F1EC;border:1px solid #E8E2D8;"></span>
+        </div>
+        <div class="theme-name">暮夜靛</div>
+        <div class="theme-desc">靛紫 × 珊瑚橙</div>
+      </div>
+    </div>
+
+    <div class="section-label">通用设置</div>
+    <div class="row-card">
+      <div class="setting-row">
+        <div class="setting-left"><i class="ti ti-clock-pause" aria-hidden="true"></i><span class="setting-name">贪睡时长</span></div>
+        <div class="setting-right"><span class="setting-value">10 分钟</span><i class="ti ti-chevron-right" aria-hidden="true"></i></div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-left"><i class="ti ti-volume" aria-hidden="true"></i><span class="setting-name">铃声音量</span></div>
+        <div class="setting-right"><span class="setting-value">跟随原曲</span><i class="ti ti-chevron-right" aria-hidden="true"></i></div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-left"><i class="ti ti-hand-stop" aria-hidden="true"></i><span class="setting-name">关闭方式</span></div>
+        <div class="setting-right"><span class="setting-value">滑动关闭</span><i class="ti ti-chevron-right" aria-hidden="true"></i></div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-left"><i class="ti ti-info-circle" aria-hidden="true"></i><span class="setting-name">关于</span></div>
+        <div class="setting-right"><i class="ti ti-chevron-right" aria-hidden="true"></i></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottomnav">
+    <div class="navitem"><i class="ti ti-disc" aria-hidden="true"></i>铃声库</div>
+    <div class="navitem"><i class="ti ti-alarm" aria-hidden="true"></i>闹钟</div>
+    <div class="navitem"><i class="ti ti-chart-bar" aria-hidden="true"></i>统计</div>
+    <div class="navitem active"><div class="navpill"><i class="ti ti-user" aria-hidden="true"></i></div>我的</div>
+  </div>
+</div>
+
+</body>
+</html>

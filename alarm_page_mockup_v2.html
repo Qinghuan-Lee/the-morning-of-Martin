@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>闹钟 · 页面预览 v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/dist/tabler-icons.min.css">
+<style>
+  :root{
+    --bg:#FAF6EF;
+    --surface:#FFFFFF;
+    --primary:#E1875A;
+    --primary-tint:#F6DCC3;
+    --primary-text:#8A4A22;
+    --secondary:#8D7FCB;
+    --secondary-tint:#E8E2F6;
+    --secondary-text:#4E4390;
+    --text-primary:#2B2621;
+    --text-secondary:#95897A;
+    --text-muted:#B7AD9E;
+    --border:#ECE4D6;
+    --shadow:rgba(43,38,33,0.08);
+    --font-serif:'Fraunces',serif;
+    --font-sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    background:#EDE7DC;
+    font-family:var(--font-sans);
+    display:flex;
+    justify-content:center;
+    gap:32px;
+    flex-wrap:wrap;
+    padding:40px 16px;
+  }
+  .phone{
+    width:390px;
+    height:844px;
+    background:var(--bg);
+    border-radius:44px;
+    box-shadow:0 30px 60px rgba(43,38,33,0.18), 0 0 0 10px #1c1a17;
+    overflow:hidden;
+    position:relative;
+    display:flex;
+    flex-direction:column;
+  }
+  .status{
+    flex:none;
+    display:flex;justify-content:space-between;align-items:center;
+    padding:18px 26px 4px;font-size:13px;font-weight:600;color:var(--text-primary);
+  }
+  .screen{flex:1 1 auto;overflow-y:auto;padding:6px 20px 10px;}
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 0 6px;}
+  .chip-count{
+    display:flex;align-items:center;gap:6px;
+    background:var(--surface);border-radius:999px;padding:8px 14px;
+    font-size:12px;font-weight:600;color:var(--text-secondary);
+    box-shadow:0 1px 3px var(--shadow);
+  }
+  .chip-count i{font-size:14px;color:var(--primary);}
+  .topbar-actions{display:flex;gap:10px;}
+  .icon-circle{
+    width:36px;height:36px;border-radius:50%;background:var(--surface);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 1px 3px var(--shadow);color:var(--text-primary);font-size:16px;
+  }
+  .header{padding:14px 2px 18px;}
+  .header h1{font-family:var(--font-serif);font-weight:600;font-size:32px;color:var(--text-primary);letter-spacing:-0.3px;}
+  .header p{margin-top:4px;font-size:13.5px;color:var(--text-secondary);}
+
+  .alarm-card{
+    background:var(--surface);border-radius:20px;padding:16px 18px;
+    box-shadow:0 1px 4px var(--shadow);margin-bottom:14px;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .alarm-card.off{opacity:0.5;}
+  .alarm-left .time{font-family:var(--font-serif);font-size:30px;font-weight:600;color:var(--text-primary);line-height:1;}
+  .alarm-left .sub{display:flex;align-items:center;gap:6px;margin-top:8px;}
+  .alarm-left .repeat{font-size:12.5px;color:var(--text-secondary);}
+  .tag{font-size:10.5px;font-weight:600;padding:3px 8px;border-radius:6px;letter-spacing:0.2px;}
+  .tag.op{background:var(--primary-tint);color:var(--primary-text);}
+  .tag.inst{background:var(--secondary-tint);color:var(--secondary-text);}
+
+  .switch{width:44px;height:26px;border-radius:999px;background:var(--border);position:relative;flex:none;}
+  .switch.on{background:var(--primary);}
+  .switch .knob{width:20px;height:20px;border-radius:50%;background:#fff;position:absolute;top:3px;left:3px;box-shadow:0 1px 3px rgba(0,0,0,0.15);}
+  .switch.on .knob{left:21px;}
+
+  .add-fab{
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    background:var(--primary);color:#fff;border-radius:18px;padding:14px;
+    font-size:14px;font-weight:600;margin-top:6px;
+    box-shadow:0 4px 14px rgba(225,135,90,0.35);
+  }
+
+  .bottomnav{flex:none;display:flex;justify-content:space-around;padding:10px 8px 22px;background:var(--surface);}
+  .navitem{display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--text-muted);font-size:11px;font-weight:500;}
+  .navitem i{font-size:21px;}
+  .navitem.active{color:var(--primary-text);}
+  .navitem.active .navpill{background:var(--primary-tint);border-radius:12px;padding:4px 14px 2px;}
+
+  .section-label{font-size:12px;font-weight:600;letter-spacing:0.4px;color:var(--text-muted);text-transform:uppercase;margin:22px 0 10px 2px;}
+  .row-card{background:var(--surface);border-radius:18px;box-shadow:0 1px 4px var(--shadow);overflow:hidden;}
+  .repeat-chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .rchip{padding:9px 16px;border-radius:999px;font-size:13px;font-weight:600;background:var(--surface);color:var(--text-secondary);box-shadow:0 1px 3px var(--shadow);}
+  .rchip.selected{background:var(--primary-tint);color:var(--primary-text);box-shadow:none;}
+
+  .weekday-row{display:flex;justify-content:space-between;padding:14px 4px;background:var(--surface);border-radius:18px;box-shadow:0 1px 4px var(--shadow);margin-top:10px;}
+  .wday{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:var(--text-secondary);background:var(--bg);}
+  .wday.selected{background:var(--primary);color:#fff;}
+
+  .cat-list{display:flex;flex-direction:column;}
+  .cat-item{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);}
+  .cat-item:last-child{border-bottom:none;}
+  .cat-left{display:flex;align-items:center;gap:12px;}
+  .cat-dot{width:10px;height:10px;border-radius:50%;}
+  .cat-dot.c1{background:var(--primary);}
+  .cat-dot.c2{background:var(--secondary);}
+  .cat-dot.c3{background:#C9A46B;}
+  .cat-name{font-size:14.5px;font-weight:600;color:var(--text-primary);}
+  .cat-count{font-size:12px;color:var(--text-secondary);margin-left:6px;}
+  .radio{width:20px;height:20px;border-radius:50%;border:2px solid var(--border);position:relative;}
+  .radio.checked{border-color:var(--primary);}
+  .radio.checked::after{content:'';position:absolute;top:3px;left:3px;width:10px;height:10px;border-radius:50%;background:var(--primary);}
+
+  .info-note{display:flex;gap:10px;background:var(--secondary-tint);border-radius:16px;padding:14px 16px;margin-top:16px;}
+  .info-note i{color:var(--secondary-text);font-size:17px;flex:none;margin-top:1px;}
+  .info-note span{font-size:12.5px;color:var(--secondary-text);line-height:1.55;}
+
+  .save-btn{display:flex;align-items:center;justify-content:center;background:var(--primary);color:#fff;border-radius:18px;padding:16px;font-size:15px;font-weight:600;margin-top:24px;box-shadow:0 4px 14px rgba(225,135,90,0.35);}
+  .delete-link{text-align:center;color:#C15B3F;font-size:13px;font-weight:600;margin-top:16px;}
+
+  /* time display trigger */
+  .time-trigger{
+    display:flex;align-items:center;justify-content:center;gap:12px;
+    background:var(--surface);border-radius:20px;
+    padding:22px 0;
+    box-shadow:0 1px 4px var(--shadow);
+    margin-top:8px;
+  }
+  .time-trigger .big{font-family:var(--font-serif);font-size:48px;font-weight:600;color:var(--text-primary);}
+  .time-trigger i{font-size:18px;color:var(--text-muted);}
+  .time-hint{text-align:center;font-size:12px;color:var(--text-muted);margin-top:8px;}
+
+  /* bottom sheet modal for wheel picker */
+  .scrim{
+    position:absolute;inset:0;
+    background:rgba(43,38,33,0.45);
+    display:flex;align-items:flex-end;
+  }
+  .sheet{
+    width:100%;
+    background:var(--surface);
+    border-radius:26px 26px 0 0;
+    padding:14px 22px 34px;
+    box-shadow:0 -10px 30px rgba(43,38,33,0.2);
+  }
+  .sheet-handle{width:36px;height:4px;background:var(--border);border-radius:999px;margin:0 auto 14px;}
+  .sheet-title{font-size:15px;font-weight:600;color:var(--text-primary);text-align:center;margin-bottom:6px;}
+  .wheel-wrap{
+    position:relative;
+    display:flex;
+    justify-content:center;
+    gap:18px;
+    padding:12px 0;
+  }
+  .wheel-highlight{
+    position:absolute;
+    top:50%;left:12%;right:12%;
+    transform:translateY(-50%);
+    height:44px;
+    background:var(--primary-tint);
+    border-radius:12px;
+    z-index:0;
+  }
+  .wheel-col{
+    position:relative;
+    z-index:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+  }
+  .wheel-num{
+    font-family:var(--font-serif);
+    font-size:20px;
+    color:var(--text-muted);
+    padding:10px 18px;
+  }
+  .wheel-num.mid{font-size:28px;font-weight:600;color:var(--primary-text);}
+  .wheel-num.near{color:var(--text-secondary);font-size:22px;}
+  .wheel-colon{align-self:center;font-family:var(--font-serif);font-size:28px;font-weight:600;color:var(--text-muted);z-index:1;}
+  .sheet-confirm{
+    margin-top:18px;
+    background:var(--primary);color:#fff;
+    text-align:center;
+    padding:14px;border-radius:16px;
+    font-size:14.5px;font-weight:600;
+  }
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="status"><span>10:24</span><span><i class="ti ti-wifi" aria-hidden="true"></i>&nbsp;<i class="ti ti-battery-4" aria-hidden="true"></i></span></div>
+  <div class="screen">
+    <div class="topbar">
+      <div class="chip-count"><i class="ti ti-alarm" aria-hidden="true"></i>共 3 个闹钟</div>
+      <div class="topbar-actions"><div class="icon-circle"><i class="ti ti-dots" aria-hidden="true"></i></div></div>
+    </div>
+    <div class="header"><h1>闹钟</h1><p>到点从绑定的分类里随机抽一首开场曲</p></div>
+
+    <div class="alarm-card">
+      <div class="alarm-left"><div class="time">07:00</div><div class="sub"><span class="repeat">仅工作日</span><span class="tag op">动画OP</span></div></div>
+      <div class="switch on"><div class="knob"></div></div>
+    </div>
+    <div class="alarm-card">
+      <div class="alarm-left"><div class="time">09:30</div><div class="sub"><span class="repeat">周六 · 周日</span><span class="tag inst">纯音乐</span></div></div>
+      <div class="switch on"><div class="knob"></div></div>
+    </div>
+    <div class="alarm-card off">
+      <div class="alarm-left"><div class="time">14:20</div><div class="sub"><span class="repeat">仅此一次</span><span class="tag op">动画OP</span></div></div>
+      <div class="switch"><div class="knob"></div></div>
+    </div>
+
+    <div class="add-fab"><i class="ti ti-plus" aria-hidden="true"></i>新建闹钟</div>
+  </div>
+  <div class="bottomnav">
+    <div class="navitem"><i class="ti ti-disc" aria-hidden="true"></i>铃声库</div>
+    <div class="navitem active"><div class="navpill"><i class="ti ti-alarm" aria-hidden="true"></i></div>闹钟</div>
+    <div class="navitem"><i class="ti ti-chart-bar" aria-hidden="true"></i>统计</div>
+    <div class="navitem"><i class="ti ti-user" aria-hidden="true"></i>我的</div>
+  </div>
+</div>
+
+<div class="phone">
+  <div class="status"><span>10:24</span><span><i class="ti ti-wifi" aria-hidden="true"></i>&nbsp;<i class="ti ti-battery-4" aria-hidden="true"></i></span></div>
+  <div class="screen">
+    <div class="topbar">
+      <div class="icon-circle"><i class="ti ti-arrow-left" aria-hidden="true"></i></div>
+      <div class="chip-count" style="color:var(--text-primary);">新建闹钟</div>
+      <div class="icon-circle" style="width:auto;border-radius:999px;padding:0 16px;font-size:13px;font-weight:600;color:var(--primary-text);">保存</div>
+    </div>
+
+    <div class="section-label">时间</div>
+    <div class="time-trigger"><span class="big">07:00</span><i class="ti ti-chevron-right" aria-hidden="true"></i></div>
+    <div class="time-hint">点击时间，从下方弹出滚轮选择</div>
+
+    <div class="section-label">重复</div>
+    <div class="repeat-chips">
+      <div class="rchip">每天</div>
+      <div class="rchip selected">仅工作日</div>
+      <div class="rchip">自定义</div>
+      <div class="rchip">仅此一次</div>
+    </div>
+    <div class="weekday-row">
+      <div class="wday selected">一</div><div class="wday selected">二</div><div class="wday selected">三</div>
+      <div class="wday selected">四</div><div class="wday selected">五</div><div class="wday">六</div><div class="wday">日</div>
+    </div>
+
+    <div class="section-label">绑定曲库分类</div>
+    <div class="row-card cat-list">
+      <div class="cat-item"><div class="cat-left"><span class="cat-dot c1"></span><span class="cat-name">动画OP</span><span class="cat-count">52 首</span></div><div class="radio checked"></div></div>
+      <div class="cat-item"><div class="cat-left"><span class="cat-dot c2"></span><span class="cat-name">纯音乐</span><span class="cat-count">30 首</span></div><div class="radio"></div></div>
+      <div class="cat-item"><div class="cat-left"><span class="cat-dot c3"></span><span class="cat-name">华语</span><span class="cat-count">24 首</span></div><div class="radio"></div></div>
+      <div class="cat-item"><div class="cat-left"><i class="ti ti-plus" style="font-size:15px;color:var(--text-muted);"></i><span class="cat-name" style="color:var(--text-secondary);">新建分类</span></div></div>
+    </div>
+
+    <div class="info-note"><i class="ti ti-info-circle" aria-hidden="true"></i><span>贪睡 10 分钟后，将从「动画OP」分类中重新随机播放一首，不会与本次相同。</span></div>
+
+    <div class="save-btn">保存闹钟</div>
+    <div class="delete-link">删除闹钟</div>
+  </div>
+</div>
+
+<div class="phone">
+  <div class="status"><span>10:24</span><span><i class="ti ti-wifi" aria-hidden="true"></i>&nbsp;<i class="ti ti-battery-4" aria-hidden="true"></i></span></div>
+  <div class="screen" style="overflow:hidden;position:relative;padding:0;">
+    <div style="padding:6px 20px;">
+      <div class="topbar">
+        <div class="icon-circle"><i class="ti ti-arrow-left" aria-hidden="true"></i></div>
+        <div class="chip-count" style="color:var(--text-primary);">新建闹钟</div>
+        <div class="icon-circle" style="width:auto;border-radius:999px;padding:0 16px;font-size:13px;font-weight:600;color:var(--primary-text);">保存</div>
+      </div>
+      <div class="section-label">时间</div>
+      <div class="time-trigger" style="opacity:0.5;"><span class="big">07:00</span><i class="ti ti-chevron-right" aria-hidden="true"></i></div>
+    </div>
+
+    <div class="scrim">
+      <div class="sheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-title">选择时间</div>
+        <div class="wheel-wrap">
+          <div class="wheel-highlight"></div>
+          <div class="wheel-col">
+            <div class="wheel-num">05</div>
+            <div class="wheel-num near">06</div>
+            <div class="wheel-num mid">07</div>
+            <div class="wheel-num near">08</div>
+            <div class="wheel-num">09</div>
+          </div>
+          <div class="wheel-colon">:</div>
+          <div class="wheel-col">
+            <div class="wheel-num">58</div>
+            <div class="wheel-num near">59</div>
+            <div class="wheel-num mid">00</div>
+            <div class="wheel-num near">01</div>
+            <div class="wheel-num">02</div>
+          </div>
+        </div>
+        <div class="sheet-confirm">完成</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
