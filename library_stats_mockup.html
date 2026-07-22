@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>铃声库 / 统计 / 我的 · 页面预览</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/dist/tabler-icons.min.css">
+<style>
+  :root{
+    --bg:#FAF6EF;
+    --surface:#FFFFFF;
+    --primary:#E1875A;
+    --primary-tint:#F6DCC3;
+    --primary-text:#8A4A22;
+    --primary-shadow:rgba(225,135,90,0.35);
+    --secondary:#8D7FCB;
+    --secondary-tint:#E8E2F6;
+    --secondary-text:#4E4390;
+    --c3:#C9A46B;
+    --c3-tint:#F2E7D2;
+    --c3-text:#7A5C28;
+    --text-primary:#2B2621;
+    --text-secondary:#95897A;
+    --text-muted:#B7AD9E;
+    --border:#ECE4D6;
+    --shadow:rgba(43,38,33,0.08);
+    --font-serif:'Fraunces',serif;
+    --font-sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    background:#EDE7DC;
+    font-family:var(--font-sans);
+    display:flex;
+    justify-content:center;
+    gap:32px;
+    flex-wrap:wrap;
+    padding:40px 16px;
+  }
+  .phone{
+    width:390px;
+    height:844px;
+    background:var(--bg);
+    border-radius:44px;
+    box-shadow:0 30px 60px rgba(43,38,33,0.18), 0 0 0 10px #1c1a17;
+    overflow:hidden;
+    position:relative;
+    display:flex;
+    flex-direction:column;
+  }
+  .status{
+    flex:none;
+    display:flex;justify-content:space-between;align-items:center;
+    padding:18px 26px 4px;font-size:13px;font-weight:600;color:var(--text-primary);
+  }
+  .screen{flex:1 1 auto;overflow-y:auto;padding:6px 20px 10px;}
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 0 6px;}
+  .chip-count{
+    display:flex;align-items:center;gap:6px;
+    background:var(--surface);border-radius:999px;padding:8px 14px;
+    font-size:12px;font-weight:600;color:var(--text-secondary);
+    box-shadow:0 1px 3px var(--shadow);
+  }
+  .chip-count i{font-size:14px;color:var(--primary);}
+  .icon-circle{
+    width:36px;height:36px;border-radius:50%;background:var(--surface);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 1px 3px var(--shadow);color:var(--text-primary);font-size:16px;
+  }
+  .header{padding:14px 2px 18px;}
+  .header h1{font-family:var(--font-serif);font-weight:600;font-size:32px;color:var(--text-primary);letter-spacing:-0.3px;}
+  .header p{margin-top:4px;font-size:13.5px;color:var(--text-secondary);}
+
+  .bottomnav{flex:none;display:flex;justify-content:space-around;padding:10px 8px 22px;background:var(--surface);}
+  .navitem{display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--text-muted);font-size:11px;font-weight:500;}
+  .navitem i{font-size:21px;}
+  .navitem.active{color:var(--primary-text);}
+  .navitem.active .navpill{background:var(--primary-tint);border-radius:12px;padding:4px 14px 2px;}
+
+  .section-label{font-size:12px;font-weight:600;letter-spacing:0.4px;color:var(--text-muted);text-transform:uppercase;margin:22px 0 10px 2px;}
+  .row-card{background:var(--surface);border-radius:18px;box-shadow:0 1px 4px var(--shadow);overflow:hidden;}
+
+  /* filter chips */
+  .filter-chips{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+  .rchip{padding:9px 16px;border-radius:999px;font-size:13px;font-weight:600;background:var(--surface);color:var(--text-secondary);box-shadow:0 1px 3px var(--shadow);cursor:pointer;}
+  .rchip.selected{background:var(--primary-tint);color:var(--primary-text);box-shadow:none;}
+  .rchip.manage{margin-left:auto;display:flex;align-items:center;gap:6px;color:var(--primary-text);}
+
+  /* song list */
+  .song-row{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);}
+  .song-row:last-child{border-bottom:none;}
+  .song-icon{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:17px;flex:none;}
+  .song-icon.c1{background:var(--primary-tint);color:var(--primary-text);}
+  .song-icon.c2{background:var(--secondary-tint);color:var(--secondary-text);}
+  .song-icon.c3{background:var(--c3-tint);color:var(--c3-text);}
+  .song-main{min-width:0;}
+  .song-name{font-size:14.5px;font-weight:600;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .song-sub{font-size:12px;color:var(--text-secondary);margin-top:2px;}
+  .song-dur{margin-left:auto;font-size:12.5px;color:var(--text-muted);flex:none;font-variant-numeric:tabular-nums;}
+
+  .add-fab{
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    background:var(--primary);color:#fff;border-radius:18px;padding:14px;
+    font-size:14px;font-weight:600;margin-top:14px;
+    box-shadow:0 4px 14px var(--primary-shadow);
+    cursor:pointer;
+  }
+
+  /* category management */
+  .cat-row{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--border);cursor:pointer;}
+  .cat-row:last-child{border-bottom:none;}
+  .cat-dot{width:10px;height:10px;border-radius:50%;flex:none;}
+  .cat-dot.c1{background:var(--primary);}
+  .cat-dot.c2{background:var(--secondary);}
+  .cat-dot.c3{background:var(--c3);}
+  .cat-name{font-size:14.5px;font-weight:600;color:var(--text-primary);}
+  .cat-count{font-size:12px;color:var(--text-secondary);margin-left:2px;}
+  .cat-row i.chev{margin-left:auto;color:var(--text-muted);font-size:16px;}
+  .preset-badge{font-size:10.5px;font-weight:600;color:var(--text-muted);background:var(--bg);border-radius:6px;padding:3px 7px;}
+
+  .info-note{display:flex;gap:10px;background:var(--secondary-tint);border-radius:16px;padding:14px 16px;margin-top:16px;}
+  .info-note i{color:var(--secondary-text);font-size:17px;flex:none;margin-top:1px;}
+  .info-note span{font-size:12.5px;color:var(--secondary-text);line-height:1.55;}
+
+  /* stats */
+  .stat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+  .stat-card{background:var(--surface);border-radius:18px;padding:14px 12px;box-shadow:0 1px 4px var(--shadow);text-align:center;}
+  .stat-num{font-family:var(--font-serif);font-size:24px;font-weight:600;color:var(--text-primary);line-height:1.1;}
+  .stat-num em{font-style:normal;font-size:13px;color:var(--text-secondary);}
+  .stat-label{font-size:11.5px;color:var(--text-secondary);margin-top:6px;}
+
+  .chart-card{background:var(--surface);border-radius:18px;padding:16px;box-shadow:0 1px 4px var(--shadow);}
+  .chart-title{font-size:13.5px;font-weight:600;color:var(--text-primary);}
+  .chart-sub{font-size:11.5px;color:var(--text-secondary);margin-top:2px;}
+  .chart{position:relative;display:flex;align-items:flex-end;justify-content:space-between;height:150px;margin-top:16px;padding:0 4px;}
+  .chart-line{position:absolute;left:0;right:0;top:34%;border-top:1.5px dashed var(--secondary);z-index:0;}
+  .chart-line-label{position:absolute;right:0;top:calc(34% - 17px);font-size:10.5px;color:var(--secondary-text);font-weight:600;}
+  .bar-col{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end;}
+  .bar{width:22px;border-radius:8px 8px 4px 4px;background:var(--primary-tint);}
+  .bar.today{background:var(--primary);}
+  .bar-label{font-size:11px;color:var(--text-muted);font-weight:500;}
+  .bar-label.today{color:var(--primary-text);font-weight:700;}
+
+  .top-row{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);}
+  .top-row:last-child{border-bottom:none;}
+  .top-rank{font-family:var(--font-serif);font-size:20px;font-weight:600;color:var(--primary-text);width:26px;flex:none;text-align:center;}
+  .top-name{font-size:14px;font-weight:600;color:var(--text-primary);}
+  .top-sub{font-size:11.5px;color:var(--text-secondary);margin-top:2px;}
+  .top-count{margin-left:auto;font-size:12px;color:var(--text-muted);flex:none;}
+
+  /* profile & theme (与 settings_theme_mockup 一致) */
+  .profile-card{
+    display:flex;align-items:center;gap:14px;
+    background:var(--surface);border-radius:20px;padding:16px 18px;
+    box-shadow:0 1px 4px var(--shadow);margin-bottom:8px;
+  }
+  .avatar{
+    width:48px;height:48px;border-radius:50%;
+    background:var(--primary-tint);color:var(--primary-text);
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-serif);font-size:19px;font-weight:600;
+    flex:none;
+  }
+  .profile-name{font-size:15px;font-weight:600;color:var(--text-primary);}
+  .profile-sub{font-size:12.5px;color:var(--text-secondary);margin-top:2px;}
+  .profile-card i.chev{margin-left:auto;color:var(--text-muted);font-size:16px;}
+
+  .theme-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .theme-card{
+    background:var(--surface);border-radius:18px;padding:14px;
+    box-shadow:0 1px 4px var(--shadow);
+    position:relative;
+    cursor:pointer;
+    transition:box-shadow .15s ease;
+  }
+  .theme-card.selected{box-shadow:0 0 0 2px var(--primary);}
+  .theme-swatch{display:flex;gap:6px;margin-bottom:10px;}
+  .dot{width:18px;height:18px;border-radius:50%;}
+  .theme-name{font-size:13.5px;font-weight:600;color:var(--text-primary);}
+  .theme-desc{font-size:11.5px;color:var(--text-secondary);margin-top:2px;}
+  .theme-check{
+    position:absolute;top:10px;right:10px;
+    width:20px;height:20px;border-radius:50%;
+    background:var(--primary);color:#fff;
+    display:none;align-items:center;justify-content:center;font-size:12px;
+  }
+  .theme-card.selected .theme-check{display:flex;}
+
+  .setting-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);}
+  .setting-row:last-child{border-bottom:none;}
+  .setting-left{display:flex;align-items:center;gap:12px;}
+  .setting-left i{font-size:17px;color:var(--text-secondary);width:20px;text-align:center;}
+  .setting-name{font-size:14.5px;font-weight:600;color:var(--text-primary);}
+  .setting-value{font-size:13px;color:var(--text-muted);}
+  .setting-right{display:flex;align-items:center;gap:6px;color:var(--text-muted);}
+</style>
+</head>
+<body>
+
+<!-- ① 铃声库 -->
+<div class="phone">
+  <div class="status"><span>10:24</span><span><i class="ti ti-wifi" aria-hidden="true"></i>&nbsp;<i class="ti ti-battery-4" aria-hidden="true"></i></span></div>
+  <div class="screen">
+    <div class="topbar">
+      <div class="chip-count"><i class="ti ti-disc" aria-hidden="true"></i>共 106 首</div>
+      <div class="icon-circle"><i class="ti ti-search" aria-hidden="true"></i></div>
+    </div>
+    <div class="header"><h1>铃声库</h1><p>导入的原始音频，按分类随机抽取</p></div>
+
+    <div class="filter-chips">
+      <div class="rchip selected" data-filter="all">全部</div>
+      <div class="rchip" data-filter="c1">动画OP</div>
+      <div class="rchip" data-filter="c2">纯音乐</div>
+      <div class="rchip" data-filter="c3">华语</div>
+      <div class="rchip manage"><i class="ti ti-adjustments-horizontal" aria-hidden="true"></i>管理分类</div>
+    </div>
+
+    <div class="row-card" id="songList">
+      <div class="song-row" data-cat="c1">
+        <div class="song-icon c1"><i class="ti ti-music" aria-hidden="true"></i></div>
+        <div class="song-main"><div class="song-name">紅蓮華</div><div class="song-sub">鬼灭之刃 OP</div></div>
+        <div class="song-dur">3:56</div>
+      </div>
+      <div class="song-row" data-cat="c1">
+        <div class="song-icon c1"><i class="ti ti-music" aria-hidden="true"></i></div>
+        <div class="song-main"><div class="song-name">Only My Railgun</div><div class="song-sub">某科学的超电磁炮 OP</div></div>
+        <div class="song-dur">4:07</div>
+      </div>
+      <div class="song-row" data-cat="c1">
+        <div class="song-icon c1"><i class="ti ti-music" aria-hidden="true"></i></div>
+        <div class="song-main"><div class="song-name">unravel</div><div class="song-sub">东京食尸鬼 OP</div></div>
+        <div class="song-dur">3:58</div>
+      </div>
+      <div class="song-row" data-cat="c1">
+        <div class="song-icon c1"><i class="ti ti-music" aria-hidden="true"></i></div>
+        <div class="song-main"><div class="song-name">KICK BACK</div><div class="song-sub">电锯人 OP</div></div>
+        <div class="song-dur">3:13</div>
+      </div>
+      <div class="song-row" data-cat="c2">
+        <div class="song-icon c2"><i class="ti ti-music" aria-hidden="true"></i></div>
+        <div class="song-main"><div class="song-name">River Flows in You</div><div class="song-sub">Yiruma</div></div>
+        <div class="song-dur">3:08</div>
+      </div>
+      <div class="song-row" data-cat="c2">
+        <div class="song-icon c2"><i class="ti ti-music" aria-hidden="true"></i></div>
+        <div class="song-main"><div class="song-name">Merry Christmas Mr. Lawrence</div><div class="song-sub">坂本龙一</div></div>
+        <div class="song-dur">4:30</div>
+      </div>
+      <div class="song-row" data-cat="c3">
+        <div class="song-icon c3"><i class="ti ti-music" aria-hidden="true"></i></div>
+        <div class="song-main"><div class="song-name">晴天</div><div class="song-sub">周杰伦</div></div>
+        <div class="song-dur">4:29</div>
+      </div>
+      <div class="song-row" data-cat="c3">
+        <div class="song-icon c3"><i class="ti ti-music" aria-hidden="true"></i></div>
+        <div class="song-main"><div class="song-name">夜曲</div><div class="song-sub">周杰伦</div></div>
+        <div class="song-dur">3:46</div>
+      </div>
+    </div>
+
+    <div class="add-fab"><i class="ti ti-plus" aria-hidden="true"></i>导入音频文件</div>
+  </div>
+  <div class="bottomnav">
+    <div class="navitem active"><div class="navpill"><i class="ti ti-disc" aria-hidden="true"></i></div>铃声库</div>
+    <div class="navitem"><i class="ti ti-alarm" aria-hidden="true"></i>闹钟</div>
+    <div class="navitem"><i class="ti ti-chart-bar" aria-hidden="true"></i>统计</div>
+    <div class="navitem"><i class="ti ti-user" aria-hidden="true"></i>我的</div>
+  </div>
+</div>
+
+<!-- ② 分类管理（铃声库二级页） -->
+<div class="phone">
+  <div class="status"><span>10:24</span><span><i class="ti ti-wifi" aria-hidden="true"></i>&nbsp;<i class="ti ti-battery-4" aria-hidden="true"></i></span></div>
+  <div class="screen">
+    <div class="topbar">
+      <div class="icon-circle"><i class="ti ti-arrow-left" aria-hidden="true"></i></div>
+      <div class="chip-count" style="color:var(--text-primary);">分类管理</div>
+      <div class="icon-circle" style="visibility:hidden;"><i class="ti ti-arrow-left" aria-hidden="true"></i></div>
+    </div>
+
+    <div class="section-label">预设分类</div>
+    <div class="row-card">
+      <div class="cat-row">
+        <span class="cat-dot c1"></span><span class="cat-name">动画OP</span><span class="preset-badge">预设</span>
+        <span class="cat-count">52 首</span>
+        <i class="ti ti-chevron-right chev" aria-hidden="true"></i>
+      </div>
+      <div class="cat-row">
+        <span class="cat-dot c2"></span><span class="cat-name">纯音乐</span><span class="preset-badge">预设</span>
+        <span class="cat-count">30 首</span>
+        <i class="ti ti-chevron-right chev" aria-hidden="true"></i>
+      </div>
+    </div>
+
+    <div class="section-label">我的分类</div>
+    <div class="row-card">
+      <div class="cat-row">
+        <span class="cat-dot c3"></span><span class="cat-name">华语</span>
+        <span class="cat-count">24 首</span>
+        <i class="ti ti-chevron-right chev" aria-hidden="true"></i>
+      </div>
+    </div>
+
+    <div class="info-note"><i class="ti ti-info-circle" aria-hidden="true"></i><span>点击分类进入歌曲分配页，勾选铃声库里的歌即可归入该分类；闹钟响铃时只会从绑定的那个分类里抽歌。</span></div>
+
+    <div class="add-fab"><i class="ti ti-plus" aria-hidden="true"></i>新建分类</div>
+  </div>
+</div>
+
+<!-- ③ 统计 -->
+<div class="phone">
+  <div class="status"><span>10:24</span><span><i class="ti ti-wifi" aria-hidden="true"></i>&nbsp;<i class="ti ti-battery-4" aria-hidden="true"></i></span></div>
+  <div class="screen">
+    <div class="header"><h1>统计</h1><p>看看每个早晨的片头曲</p></div>
+
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-num">12<em> 天</em></div><div class="stat-label">连续早起</div></div>
+      <div class="stat-card"><div class="stat-num">07:12</div><div class="stat-label">平均起床</div></div>
+      <div class="stat-card"><div class="stat-num">8<em> 次</em></div><div class="stat-label">本月贪睡</div></div>
+    </div>
+
+    <div class="section-label">本周关闭闹钟时间</div>
+    <div class="chart-card">
+      <div class="chart-title">07:00 目标线</div>
+      <div class="chart-sub">柱越高，起得越晚</div>
+      <div class="chart">
+        <div class="chart-line"></div>
+        <div class="chart-line-label">目标 07:00</div>
+        <div class="bar-col"><div class="bar" style="height:52%;"></div><div class="bar-label">一</div></div>
+        <div class="bar-col"><div class="bar" style="height:64%;"></div><div class="bar-label">二</div></div>
+        <div class="bar-col"><div class="bar" style="height:58%;"></div><div class="bar-label">三</div></div>
+        <div class="bar-col"><div class="bar today" style="height:76%;"></div><div class="bar-label today">四</div></div>
+        <div class="bar-col"><div class="bar" style="height:60%;"></div><div class="bar-label">五</div></div>
+        <div class="bar-col"><div class="bar" style="height:38%;"></div><div class="bar-label">六</div></div>
+        <div class="bar-col"><div class="bar" style="height:44%;"></div><div class="bar-label">日</div></div>
+      </div>
+    </div>
+
+    <div class="section-label">最常被抽中</div>
+    <div class="row-card">
+      <div class="top-row">
+        <div class="top-rank">1</div>
+        <div><div class="top-name">紅蓮華</div><div class="top-sub">动画OP</div></div>
+        <div class="top-count">被抽中 9 次</div>
+      </div>
+      <div class="top-row">
+        <div class="top-rank">2</div>
+        <div><div class="top-name">Only My Railgun</div><div class="top-sub">动画OP</div></div>
+        <div class="top-count">被抽中 7 次</div>
+      </div>
+      <div class="top-row">
+        <div class="top-rank">3</div>
+        <div><div class="top-name">River Flows in You</div><div class="top-sub">纯音乐</div></div>
+        <div class="top-count">被抽中 5 次</div>
+      </div>
+    </div>
+  </div>
+  <div class="bottomnav">
+    <div class="navitem"><i class="ti ti-disc" aria-hidden="true"></i>铃声库</div>
+    <div class="navitem"><i class="ti ti-alarm" aria-hidden="true"></i>闹钟</div>
+    <div class="navitem active"><div class="navpill"><i class="ti ti-chart-bar" aria-hidden="true"></i></div>统计</div>
+    <div class="navitem"><i class="ti ti-user" aria-hidden="true"></i>我的</div>
+  </div>
+</div>
+
+<!-- ④ 我的 -->
+<div class="phone">
+  <div class="status"><span>10:24</span><span><i class="ti ti-wifi" aria-hidden="true"></i>&nbsp;<i class="ti ti-battery-4" aria-hidden="true"></i></span></div>
+  <div class="screen">
+    <div class="header"><h1>我的</h1><p>通用设置与主题</p></div>
+
+    <div class="profile-card">
+      <div class="avatar">M</div>
+      <div>
+        <div class="profile-name">Martin</div>
+        <div class="profile-sub">已收藏 128 首铃声</div>
+      </div>
+      <i class="ti ti-chevron-right chev" aria-hidden="true"></i>
+    </div>
+
+    <div class="section-label">主题配色</div>
+    <div class="theme-grid">
+      <div class="theme-card selected" data-theme="sun">
+        <div class="theme-check"><i class="ti ti-check" aria-hidden="true"></i></div>
+        <div class="theme-swatch">
+          <span class="dot" style="background:#E1875A;"></span>
+          <span class="dot" style="background:#8D7FCB;"></span>
+          <span class="dot" style="background:#FAF6EF;border:1px solid #ECE4D6;"></span>
+        </div>
+        <div class="theme-name">暖阳纸</div>
+        <div class="theme-desc">赤陶 × 薰衣紫</div>
+      </div>
+
+      <div class="theme-card" data-theme="mist">
+        <div class="theme-check"><i class="ti ti-check" aria-hidden="true"></i></div>
+        <div class="theme-swatch">
+          <span class="dot" style="background:#5B84A8;"></span>
+          <span class="dot" style="background:#C98F6B;"></span>
+          <span class="dot" style="background:#F2F5F7;border:1px solid #E3E8EA;"></span>
+        </div>
+        <div class="theme-name">晨雾蓝</div>
+        <div class="theme-desc">雾蓝 × 暖沙棕</div>
+      </div>
+
+      <div class="theme-card" data-theme="forest">
+        <div class="theme-check"><i class="ti ti-check" aria-hidden="true"></i></div>
+        <div class="theme-swatch">
+          <span class="dot" style="background:#6E8F5B;"></span>
+          <span class="dot" style="background:#B97D6B;"></span>
+          <span class="dot" style="background:#F4F3EA;border:1px solid #E7E4D6;"></span>
+        </div>
+        <div class="theme-name">森野绿</div>
+        <div class="theme-desc">苔绿 × 陶土棕</div>
+      </div>
+
+      <div class="theme-card" data-theme="dusk">
+        <div class="theme-check"><i class="ti ti-check" aria-hidden="true"></i></div>
+        <div class="theme-swatch">
+          <span class="dot" style="background:#6C63B5;"></span>
+          <span class="dot" style="background:#D98B6E;"></span>
+          <span class="dot" style="background:#F5F1EC;border:1px solid #E8E2D8;"></span>
+        </div>
+        <div class="theme-name">暮夜靛</div>
+        <div class="theme-desc">靛紫 × 珊瑚橙</div>
+      </div>
+    </div>
+
+    <div class="section-label">通用设置</div>
+    <div class="row-card">
+      <div class="setting-row">
+        <div class="setting-left"><i class="ti ti-clock-pause" aria-hidden="true"></i><span class="setting-name">贪睡时长</span></div>
+        <div class="setting-right"><span class="setting-value">10 分钟</span><i class="ti ti-chevron-right" aria-hidden="true"></i></div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-left"><i class="ti ti-volume" aria-hidden="true"></i><span class="setting-name">铃声音量</span></div>
+        <div class="setting-right"><span class="setting-value">跟随原曲</span><i class="ti ti-chevron-right" aria-hidden="true"></i></div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-left"><i class="ti ti-hand-stop" aria-hidden="true"></i><span class="setting-name">关闭方式</span></div>
+        <div class="setting-right"><span class="setting-value">滑动关闭</span><i class="ti ti-chevron-right" aria-hidden="true"></i></div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-left"><i class="ti ti-info-circle" aria-hidden="true"></i><span class="setting-name">关于</span></div>
+        <div class="setting-right"><i class="ti ti-chevron-right" aria-hidden="true"></i></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottomnav">
+    <div class="navitem"><i class="ti ti-disc" aria-hidden="true"></i>铃声库</div>
+    <div class="navitem"><i class="ti ti-alarm" aria-hidden="true"></i>闹钟</div>
+    <div class="navitem"><i class="ti ti-chart-bar" aria-hidden="true"></i>统计</div>
+    <div class="navitem active"><div class="navpill"><i class="ti ti-user" aria-hidden="true"></i></div>我的</div>
+  </div>
+</div>
+
+<script>
+(function(){
+  /* 四套预设主题的完整色板（三个 mockup 文件共用） */
+  var THEMES = {
+    sun: {
+      '--bg':'#FAF6EF','--surface':'#FFFFFF','--primary':'#E1875A','--primary-tint':'#F6DCC3','--primary-text':'#8A4A22',
+      '--primary-shadow':'rgba(225,135,90,0.35)',
+      '--secondary':'#8D7FCB','--secondary-tint':'#E8E2F6','--secondary-text':'#4E4390',
+      '--text-primary':'#2B2621','--text-secondary':'#95897A','--text-muted':'#B7AD9E','--border':'#ECE4D6',
+      '--shadow':'rgba(43,38,33,0.08)'
+    },
+    mist: {
+      '--bg':'#F2F5F7','--surface':'#FFFFFF','--primary':'#5B84A8','--primary-tint':'#D9E5EE','--primary-text':'#33526E',
+      '--primary-shadow':'rgba(91,132,168,0.35)',
+      '--secondary':'#C98F6B','--secondary-tint':'#F3E3D7','--secondary-text':'#7C4E2F',
+      '--text-primary':'#272C31','--text-secondary':'#8B959C','--text-muted':'#B3BCC1','--border':'#E3E8EA',
+      '--shadow':'rgba(39,44,49,0.08)'
+    },
+    forest: {
+      '--bg':'#F4F3EA','--surface':'#FFFFFF','--primary':'#6E8F5B','--primary-tint':'#E1E9D6','--primary-text':'#41582F',
+      '--primary-shadow':'rgba(110,143,91,0.35)',
+      '--secondary':'#B97D6B','--secondary-tint':'#F1E1D9','--secondary-text':'#7A4A3A',
+      '--text-primary':'#2C2B23','--text-secondary':'#918D7C','--text-muted':'#B7B2A1','--border':'#E7E4D6',
+      '--shadow':'rgba(44,43,35,0.08)'
+    },
+    dusk: {
+      '--bg':'#F5F1EC','--surface':'#FFFFFF','--primary':'#6C63B5','--primary-tint':'#E2DFF2','--primary-text':'#413B7C',
+      '--primary-shadow':'rgba(108,99,181,0.35)',
+      '--secondary':'#D98B6E','--secondary-tint':'#F7E4DA','--secondary-text':'#8A4F36',
+      '--text-primary':'#2B2833','--text-secondary':'#918E9A','--text-muted':'#B6B3BC','--border':'#E8E2D8',
+      '--shadow':'rgba(43,40,51,0.08)'
+    }
+  };
+
+  function applyTheme(key){
+    var t = THEMES[key];
+    if(!t) return;
+    var root = document.documentElement;
+    Object.keys(t).forEach(function(k){ root.style.setProperty(k, t[k]); });
+  }
+
+  /* 打开本页时套用已保存的主题 */
+  try{
+    var saved = localStorage.getItem('martin-theme');
+    if(saved) applyTheme(saved);
+  }catch(e){}
+
+  /* 「我的」页主题卡片：点击换肤并记忆 */
+  var cards = document.querySelectorAll('.theme-card');
+  cards.forEach(function(c){
+    c.dataset.desc = c.querySelector('.theme-desc').textContent;
+    c.addEventListener('click', function(){
+      var key = c.dataset.theme;
+      applyTheme(key);
+      cards.forEach(function(x){
+        var on = x === c;
+        x.classList.toggle('selected', on);
+        x.querySelector('.theme-desc').textContent = x.dataset.desc + (on ? '（当前）' : '');
+      });
+      try{ localStorage.setItem('martin-theme', key); }catch(e){}
+    });
+  });
+  /* 根据已保存主题初始化选中态 */
+  try{
+    var cur = localStorage.getItem('martin-theme') || 'sun';
+    cards.forEach(function(x){
+      var on = x.dataset.theme === cur;
+      x.classList.toggle('selected', on);
+      x.querySelector('.theme-desc').textContent = x.dataset.desc + (on ? '（当前）' : '');
+    });
+  }catch(e){}
+
+  /* 铃声库：分类筛选 */
+  var chips = document.querySelectorAll('.filter-chips .rchip[data-filter]');
+  var rows = document.querySelectorAll('#songList .song-row');
+  chips.forEach(function(chip){
+    chip.addEventListener('click', function(){
+      chips.forEach(function(x){ x.classList.toggle('selected', x === chip); });
+      var f = chip.dataset.filter;
+      rows.forEach(function(r){
+        r.style.display = (f === 'all' || r.dataset.cat === f) ? '' : 'none';
+      });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

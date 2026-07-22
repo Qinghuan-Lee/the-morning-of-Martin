@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="我的"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:fontFamily="serif"
+        android:textColor="?attr/colorOnSurface"
+        android:paddingTop="14dp"
+        android:paddingBottom="4dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="通用设置与主题"
+        android:textSize="13sp"
+        android:textColor="?attr/colorTextSecondary"
+        android:paddingBottom="20dp" />
+
+    <!-- TODO: 主题配色网格 + 通用设置列表 -->
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="设置页面待实现"
+        android:textColor="?attr/colorTextMuted"
+        android:gravity="center"
+        android:paddingTop="80dp" />
+
+</LinearLayout>

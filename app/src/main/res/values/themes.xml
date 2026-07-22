@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 自定义 attr -->
+    <attr name="colorSurfaceBg" format="color" />
+    <attr name="colorTextSecondary" format="color" />
+    <attr name="colorTextMuted" format="color" />
+
+    <!-- 暖阳纸（默认主题） -->
+    <style name="Theme.MartinMorning" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">#E1875A</item>
+        <item name="colorPrimaryDark">#C96D3F</item>
+        <item name="colorPrimaryContainer">#F6DCC3</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorOnPrimaryContainer">#8A4A22</item>
+        <item name="colorSecondary">#8D7FCB</item>
+        <item name="colorSecondaryContainer">#E8E2F6</item>
+        <item name="colorOnSecondary">#FFFFFF</item>
+        <item name="colorOnSecondaryContainer">#4E4390</item>
+        <item name="colorSurface">#FFFFFF</item>
+        <item name="colorOnSurface">#2B2621</item>
+        <item name="colorSurfaceBg">#FAF6EF</item>
+        <item name="colorSurfaceVariant">#ECE4D6</item>
+        <item name="colorTextSecondary">#95897A</item>
+        <item name="colorTextMuted">#B7AD9E</item>
+        <item name="colorError">#C15B3F</item>
+        <item name="android:colorBackground">#FAF6EF</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">#FFFFFF</item>
+    </style>
+
+</resources>

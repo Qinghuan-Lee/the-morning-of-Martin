@@ -14,6 +14,7 @@
     --primary:#E1875A;
     --primary-tint:#F6DCC3;
     --primary-text:#8A4A22;
+    --primary-shadow:rgba(225,135,90,0.35);
     --secondary:#8D7FCB;
     --secondary-tint:#E8E2F6;
     --secondary-text:#4E4390;
@@ -92,7 +93,7 @@
     display:flex;align-items:center;justify-content:center;gap:8px;
     background:var(--primary);color:#fff;border-radius:18px;padding:14px;
     font-size:14px;font-weight:600;margin-top:6px;
-    box-shadow:0 4px 14px rgba(225,135,90,0.35);
+    box-shadow:0 4px 14px var(--primary-shadow);
   }
 
   .bottomnav{flex:none;display:flex;justify-content:space-around;padding:10px 8px 22px;background:var(--surface);}
@@ -129,7 +130,7 @@
   .info-note i{color:var(--secondary-text);font-size:17px;flex:none;margin-top:1px;}
   .info-note span{font-size:12.5px;color:var(--secondary-text);line-height:1.55;}
 
-  .save-btn{display:flex;align-items:center;justify-content:center;background:var(--primary);color:#fff;border-radius:18px;padding:16px;font-size:15px;font-weight:600;margin-top:24px;box-shadow:0 4px 14px rgba(225,135,90,0.35);}
+  .save-btn{display:flex;align-items:center;justify-content:center;background:var(--primary);color:#fff;border-radius:18px;padding:16px;font-size:15px;font-weight:600;margin-top:24px;box-shadow:0 4px 14px var(--primary-shadow);}
   .delete-link{text-align:center;color:#C15B3F;font-size:13px;font-weight:600;margin-top:16px;}
 
   /* time display trigger */
@@ -144,60 +145,68 @@
   .time-trigger i{font-size:18px;color:var(--text-muted);}
   .time-hint{text-align:center;font-size:12px;color:var(--text-muted);margin-top:8px;}
 
-  /* bottom sheet modal for wheel picker */
+  /* centered dialog modal for wheel picker */
   .scrim{
     position:absolute;inset:0;
     background:rgba(43,38,33,0.45);
-    display:flex;align-items:flex-end;
+    display:flex;align-items:center;justify-content:center;
   }
-  .sheet{
-    width:100%;
+  .scrim.hidden{display:none;}
+  .dialog{
+    width:296px;
     background:var(--surface);
-    border-radius:26px 26px 0 0;
-    padding:14px 22px 34px;
-    box-shadow:0 -10px 30px rgba(43,38,33,0.2);
+    border-radius:26px;
+    padding:20px 20px 16px;
+    box-shadow:0 18px 44px rgba(43,38,33,0.28);
   }
-  .sheet-handle{width:36px;height:4px;background:var(--border);border-radius:999px;margin:0 auto 14px;}
-  .sheet-title{font-size:15px;font-weight:600;color:var(--text-primary);text-align:center;margin-bottom:6px;}
+  .dialog-title{font-size:15px;font-weight:600;color:var(--text-primary);text-align:center;margin-bottom:6px;}
   .wheel-wrap{
     position:relative;
     display:flex;
     justify-content:center;
-    gap:18px;
-    padding:12px 0;
+    gap:14px;
+    padding:10px 0;
   }
   .wheel-highlight{
     position:absolute;
-    top:50%;left:12%;right:12%;
+    top:50%;left:14px;right:14px;
     transform:translateY(-50%);
     height:44px;
     background:var(--primary-tint);
     border-radius:12px;
     z-index:0;
+    pointer-events:none;
   }
   .wheel-col{
     position:relative;
     z-index:1;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:4px;
+    height:220px;
+    overflow-y:auto;
+    scroll-snap-type:y mandatory;
+    scrollbar-width:none;
+    padding:88px 0;
   }
+  .wheel-col::-webkit-scrollbar{display:none;}
   .wheel-num{
+    height:44px;
+    display:flex;align-items:center;justify-content:center;
+    scroll-snap-align:center;
     font-family:var(--font-serif);
     font-size:20px;
     color:var(--text-muted);
-    padding:10px 18px;
+    padding:0 20px;
+    cursor:pointer;
+    transition:font-size .12s ease,color .12s ease;
   }
-  .wheel-num.mid{font-size:28px;font-weight:600;color:var(--primary-text);}
-  .wheel-num.near{color:var(--text-secondary);font-size:22px;}
+  .wheel-num.active{font-size:28px;font-weight:600;color:var(--primary-text);}
   .wheel-colon{align-self:center;font-family:var(--font-serif);font-size:28px;font-weight:600;color:var(--text-muted);z-index:1;}
-  .sheet-confirm{
-    margin-top:18px;
+  .dialog-confirm{
+    margin-top:12px;
     background:var(--primary);color:#fff;
     text-align:center;
-    padding:14px;border-radius:16px;
+    padding:13px;border-radius:16px;
     font-size:14.5px;font-weight:600;
+    cursor:pointer;
   }
 </style>
 </head>
@@ -246,7 +255,7 @@
 
     <div class="section-label">时间</div>
     <div class="time-trigger"><span class="big">07:00</span><i class="ti ti-chevron-right" aria-hidden="true"></i></div>
-    <div class="time-hint">点击时间，从下方弹出滚轮选择</div>
+    <div class="time-hint">点击时间，在弹窗中滚动选择</div>
 
     <div class="section-label">重复</div>
     <div class="repeat-chips">
@@ -285,36 +294,122 @@
         <div class="icon-circle" style="width:auto;border-radius:999px;padding:0 16px;font-size:13px;font-weight:600;color:var(--primary-text);">保存</div>
       </div>
       <div class="section-label">时间</div>
-      <div class="time-trigger" style="opacity:0.5;"><span class="big">07:00</span><i class="ti ti-chevron-right" aria-hidden="true"></i></div>
+      <div class="time-trigger" id="timeTrigger3" style="opacity:0.5;cursor:pointer;"><span class="big" id="bigTime3">07:00</span><i class="ti ti-chevron-right" aria-hidden="true"></i></div>
+      <div class="time-hint">滚轮可上下滚动，点击数字直接跳转</div>
     </div>
 
-    <div class="scrim">
-      <div class="sheet">
-        <div class="sheet-handle"></div>
-        <div class="sheet-title">选择时间</div>
+    <div class="scrim" id="timeScrim">
+      <div class="dialog">
+        <div class="dialog-title">选择时间</div>
         <div class="wheel-wrap">
           <div class="wheel-highlight"></div>
-          <div class="wheel-col">
-            <div class="wheel-num">05</div>
-            <div class="wheel-num near">06</div>
-            <div class="wheel-num mid">07</div>
-            <div class="wheel-num near">08</div>
-            <div class="wheel-num">09</div>
-          </div>
+          <div class="wheel-col" id="wheelHour"></div>
           <div class="wheel-colon">:</div>
-          <div class="wheel-col">
-            <div class="wheel-num">58</div>
-            <div class="wheel-num near">59</div>
-            <div class="wheel-num mid">00</div>
-            <div class="wheel-num near">01</div>
-            <div class="wheel-num">02</div>
-          </div>
+          <div class="wheel-col" id="wheelMin"></div>
         </div>
-        <div class="sheet-confirm">完成</div>
+        <div class="dialog-confirm" id="timeConfirm">完成</div>
       </div>
     </div>
   </div>
 </div>
+
+<script>
+(function(){
+  /* 与设置页共用的主题色板：打开本页时套用已保存的主题 */
+  var THEMES = {
+    sun: {
+      '--bg':'#FAF6EF','--surface':'#FFFFFF','--primary':'#E1875A','--primary-tint':'#F6DCC3','--primary-text':'#8A4A22',
+      '--primary-shadow':'rgba(225,135,90,0.35)',
+      '--secondary':'#8D7FCB','--secondary-tint':'#E8E2F6','--secondary-text':'#4E4390',
+      '--text-primary':'#2B2621','--text-secondary':'#95897A','--text-muted':'#B7AD9E','--border':'#ECE4D6',
+      '--shadow':'rgba(43,38,33,0.08)'
+    },
+    mist: {
+      '--bg':'#F2F5F7','--surface':'#FFFFFF','--primary':'#5B84A8','--primary-tint':'#D9E5EE','--primary-text':'#33526E',
+      '--primary-shadow':'rgba(91,132,168,0.35)',
+      '--secondary':'#C98F6B','--secondary-tint':'#F3E3D7','--secondary-text':'#7C4E2F',
+      '--text-primary':'#272C31','--text-secondary':'#8B959C','--text-muted':'#B3BCC1','--border':'#E3E8EA',
+      '--shadow':'rgba(39,44,49,0.08)'
+    },
+    forest: {
+      '--bg':'#F4F3EA','--surface':'#FFFFFF','--primary':'#6E8F5B','--primary-tint':'#E1E9D6','--primary-text':'#41582F',
+      '--primary-shadow':'rgba(110,143,91,0.35)',
+      '--secondary':'#B97D6B','--secondary-tint':'#F1E1D9','--secondary-text':'#7A4A3A',
+      '--text-primary':'#2C2B23','--text-secondary':'#918D7C','--text-muted':'#B7B2A1','--border':'#E7E4D6',
+      '--shadow':'rgba(44,43,35,0.08)'
+    },
+    dusk: {
+      '--bg':'#F5F1EC','--surface':'#FFFFFF','--primary':'#6C63B5','--primary-tint':'#E2DFF2','--primary-text':'#413B7C',
+      '--primary-shadow':'rgba(108,99,181,0.35)',
+      '--secondary':'#D98B6E','--secondary-tint':'#F7E4DA','--secondary-text':'#8A4F36',
+      '--text-primary':'#2B2833','--text-secondary':'#918E9A','--text-muted':'#B6B3BC','--border':'#E8E2D8',
+      '--shadow':'rgba(43,40,51,0.08)'
+    }
+  };
+  try{
+    var saved = localStorage.getItem('martin-theme');
+    if(saved && THEMES[saved]){
+      var root = document.documentElement;
+      Object.keys(THEMES[saved]).forEach(function(k){ root.style.setProperty(k, THEMES[saved][k]); });
+    }
+  }catch(e){}
+
+  /* 居中弹窗滚轮时间选择器 */
+  var ITEM_H = 44;
+  var hourCol = document.getElementById('wheelHour');
+  var minCol  = document.getElementById('wheelMin');
+  var scrim   = document.getElementById('timeScrim');
+  var trigger = document.getElementById('timeTrigger3');
+  var bigTime = document.getElementById('bigTime3');
+
+  function pad(n){ return (n < 10 ? '0' : '') + n; }
+
+  function markActive(col){
+    var idx = Math.round(col.scrollTop / ITEM_H);
+    var nums = col.children;
+    for(var i = 0; i < nums.length; i++){
+      nums[i].classList.toggle('active', i === idx);
+    }
+  }
+
+  function buildWheel(col, count, initial){
+    for(var i = 0; i < count; i++){
+      var d = document.createElement('div');
+      d.className = 'wheel-num';
+      d.textContent = pad(i);
+      d.dataset.idx = i;
+      d.addEventListener('click', function(){
+        col.scrollTo({top: this.dataset.idx * ITEM_H, behavior: 'smooth'});
+      });
+      col.appendChild(d);
+    }
+    col.scrollTop = initial * ITEM_H;
+    markActive(col);
+  }
+
+  [hourCol, minCol].forEach(function(col){
+    var raf = null;
+    col.addEventListener('scroll', function(){
+      if(raf) return;
+      raf = requestAnimationFrame(function(){ markActive(col); raf = null; });
+    });
+  });
+
+  buildWheel(hourCol, 24, 7);
+  buildWheel(minCol, 60, 0);
+
+  trigger.addEventListener('click', function(){ scrim.classList.remove('hidden'); });
+  scrim.addEventListener('click', function(e){
+    if(e.target === scrim) scrim.classList.add('hidden');
+  });
+  document.getElementById('timeConfirm').addEventListener('click', function(){
+    var h = Math.round(hourCol.scrollTop / ITEM_H);
+    var m = Math.round(minCol.scrollTop / ITEM_H);
+    bigTime.textContent = pad(h) + ':' + pad(m);
+    scrim.classList.add('hidden');
+  });
+})();
+</script>
 
 </body>
 </html>

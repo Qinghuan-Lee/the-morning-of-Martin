@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="?attr/colorSurfaceBg"
+    android:padding="32dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="正在响铃"
+        android:textSize="14sp"
+        android:textColor="?attr/colorTextMuted"
+        android:letterSpacing="0.1" />
+
+    <TextView
+        android:id="@+id/tv_song_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="紅蓮華"
+        android:textSize="32sp"
+        android:fontFamily="serif"
+        android:textStyle="bold"
+        android:textColor="?attr/colorOnSurface"
+        android:gravity="center"
+        android:paddingTop="16dp"
+        android:paddingBottom="8dp" />
+
+    <TextView
+        android:id="@+id/tv_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="动画OP"
+        android:textSize="14sp"
+        android:textColor="?attr/colorPrimary"
+        android:paddingBottom="80dp" />
+
+    <!-- 滑动关闭（简化版用按钮，后续改成滑动） -->
+    <Button
+        android:id="@+id/btn_dismiss"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="关闭闹钟"
+        android:textColor="@color/white"
+        android:backgroundTint="?attr/colorPrimary"
+        android:layout_marginBottom="16dp" />
+
+    <Button
+        android:id="@+id/btn_snooze"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="贪睡 10 分钟（换一首）"
+        android:textColor="?attr/colorPrimary"
+        android:backgroundTint="?attr/colorPrimaryContainer"
+        style="@style/Widget.Material3.Button.OutlinedButton" />
+
+</LinearLayout>

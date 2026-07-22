@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="统计"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:fontFamily="serif"
+        android:textColor="?attr/colorOnSurface"
+        android:paddingTop="14dp"
+        android:paddingBottom="4dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="看看每个早晨的片头曲"
+        android:textSize="13sp"
+        android:textColor="?attr/colorTextSecondary"
+        android:paddingBottom="20dp" />
+
+    <!-- TODO: 统计卡片 + 柱状图 + TOP3 -->
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="统计页面待实现"
+        android:textColor="?attr/colorTextMuted"
+        android:gravity="center"
+        android:paddingTop="80dp" />
+
+</LinearLayout>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- 背景圆 -->
+    <path
+        android:fillColor="#E1875A"
+        android:pathData="M54,54m-40,0a40,40 0,1 1,80 0a40,40 0,1 1,-80 0" />
+    <!-- 音符 -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M48,38v21.55c-1.18,-0.68 -2.54,-1.1 -4,-1.1C39.58,58.45 36,62.03 36,66.5s3.58,8.05 8,8.05 8,-3.58 8,-8.05V46h8V38H48z"
+        android:strokeWidth="0" />
+    <!-- 闹钟外框 -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,28C42.95,28 34,36.95 34,48s8.95,20 20,20 20,-8.95 20,-20S65.05,28 54,28zM54,64c-8.84,0 -16,-7.16 -16,-16s7.16,-16 16,-16 16,7.16 16,16 -7.16,16 -16,16z"
+        android:strokeWidth="0"
+        android:fillAlpha="0.3" />
+</vector>

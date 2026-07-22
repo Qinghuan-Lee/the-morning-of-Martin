@@ -14,6 +14,7 @@
     --primary:#E1875A;
     --primary-tint:#F6DCC3;
     --primary-text:#8A4A22;
+    --primary-shadow:rgba(225,135,90,0.35);
     --secondary:#8D7FCB;
     --secondary-tint:#E8E2F6;
     --secondary-text:#4E4390;
@@ -61,6 +62,8 @@
     background:var(--surface);border-radius:18px;padding:14px;
     box-shadow:0 1px 4px var(--shadow);
     position:relative;
+    cursor:pointer;
+    transition:box-shadow .15s ease;
   }
   .theme-card.selected{box-shadow:0 0 0 2px var(--primary);}
   .theme-swatch{display:flex;gap:6px;margin-bottom:10px;}
@@ -71,8 +74,9 @@
     position:absolute;top:10px;right:10px;
     width:20px;height:20px;border-radius:50%;
     background:var(--primary);color:#fff;
-    display:flex;align-items:center;justify-content:center;font-size:12px;
+    display:none;align-items:center;justify-content:center;font-size:12px;
   }
+  .theme-card.selected .theme-check{display:flex;}
 
   .row-card{background:var(--surface);border-radius:18px;box-shadow:0 1px 4px var(--shadow);overflow:hidden;}
   .setting-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);}
@@ -108,7 +112,7 @@
 
     <div class="section-label">主题配色</div>
     <div class="theme-grid">
-      <div class="theme-card selected">
+      <div class="theme-card selected" data-theme="sun">
         <div class="theme-check"><i class="ti ti-check" aria-hidden="true"></i></div>
         <div class="theme-swatch">
           <span class="dot" style="background:#E1875A;"></span>
@@ -116,10 +120,11 @@
           <span class="dot" style="background:#FAF6EF;border:1px solid #ECE4D6;"></span>
         </div>
         <div class="theme-name">暖阳纸</div>
-        <div class="theme-desc">赤陶 × 薰衣紫（当前）</div>
+        <div class="theme-desc">赤陶 × 薰衣紫</div>
       </div>
 
-      <div class="theme-card">
+      <div class="theme-card" data-theme="mist">
+        <div class="theme-check"><i class="ti ti-check" aria-hidden="true"></i></div>
         <div class="theme-swatch">
           <span class="dot" style="background:#5B84A8;"></span>
           <span class="dot" style="background:#C98F6B;"></span>
@@ -129,7 +134,8 @@
         <div class="theme-desc">雾蓝 × 暖沙棕</div>
       </div>
 
-      <div class="theme-card">
+      <div class="theme-card" data-theme="forest">
+        <div class="theme-check"><i class="ti ti-check" aria-hidden="true"></i></div>
         <div class="theme-swatch">
           <span class="dot" style="background:#6E8F5B;"></span>
           <span class="dot" style="background:#B97D6B;"></span>
@@ -139,7 +145,8 @@
         <div class="theme-desc">苔绿 × 陶土棕</div>
       </div>
 
-      <div class="theme-card">
+      <div class="theme-card" data-theme="dusk">
+        <div class="theme-check"><i class="ti ti-check" aria-hidden="true"></i></div>
         <div class="theme-swatch">
           <span class="dot" style="background:#6C63B5;"></span>
           <span class="dot" style="background:#D98B6E;"></span>
@@ -178,6 +185,66 @@
     <div class="navitem active"><div class="navpill"><i class="ti ti-user" aria-hidden="true"></i></div>我的</div>
   </div>
 </div>
+
+<script>
+(function(){
+  /* 四套预设主题的完整色板，与 :root 变量一一对应 */
+  var THEMES = {
+    sun: {
+      '--bg':'#FAF6EF','--surface':'#FFFFFF','--primary':'#E1875A','--primary-tint':'#F6DCC3','--primary-text':'#8A4A22',
+      '--primary-shadow':'rgba(225,135,90,0.35)',
+      '--secondary':'#8D7FCB','--secondary-tint':'#E8E2F6','--secondary-text':'#4E4390',
+      '--text-primary':'#2B2621','--text-secondary':'#95897A','--text-muted':'#B7AD9E','--border':'#ECE4D6',
+      '--shadow':'rgba(43,38,33,0.08)'
+    },
+    mist: {
+      '--bg':'#F2F5F7','--surface':'#FFFFFF','--primary':'#5B84A8','--primary-tint':'#D9E5EE','--primary-text':'#33526E',
+      '--primary-shadow':'rgba(91,132,168,0.35)',
+      '--secondary':'#C98F6B','--secondary-tint':'#F3E3D7','--secondary-text':'#7C4E2F',
+      '--text-primary':'#272C31','--text-secondary':'#8B959C','--text-muted':'#B3BCC1','--border':'#E3E8EA',
+      '--shadow':'rgba(39,44,49,0.08)'
+    },
+    forest: {
+      '--bg':'#F4F3EA','--surface':'#FFFFFF','--primary':'#6E8F5B','--primary-tint':'#E1E9D6','--primary-text':'#41582F',
+      '--primary-shadow':'rgba(110,143,91,0.35)',
+      '--secondary':'#B97D6B','--secondary-tint':'#F1E1D9','--secondary-text':'#7A4A3A',
+      '--text-primary':'#2C2B23','--text-secondary':'#918D7C','--text-muted':'#B7B2A1','--border':'#E7E4D6',
+      '--shadow':'rgba(44,43,35,0.08)'
+    },
+    dusk: {
+      '--bg':'#F5F1EC','--surface':'#FFFFFF','--primary':'#6C63B5','--primary-tint':'#E2DFF2','--primary-text':'#413B7C',
+      '--primary-shadow':'rgba(108,99,181,0.35)',
+      '--secondary':'#D98B6E','--secondary-tint':'#F7E4DA','--secondary-text':'#8A4F36',
+      '--text-primary':'#2B2833','--text-secondary':'#918E9A','--text-muted':'#B6B3BC','--border':'#E8E2D8',
+      '--shadow':'rgba(43,40,51,0.08)'
+    }
+  };
+
+  var cards = document.querySelectorAll('.theme-card');
+
+  function apply(key){
+    var t = THEMES[key];
+    if(!t) return;
+    var root = document.documentElement;
+    Object.keys(t).forEach(function(k){ root.style.setProperty(k, t[k]); });
+    cards.forEach(function(c){
+      var on = c.dataset.theme === key;
+      c.classList.toggle('selected', on);
+      c.querySelector('.theme-desc').textContent = c.dataset.desc + (on ? '（当前）' : '');
+    });
+    try{ localStorage.setItem('martin-theme', key); }catch(e){}
+  }
+
+  cards.forEach(function(c){
+    c.dataset.desc = c.querySelector('.theme-desc').textContent;
+    c.addEventListener('click', function(){ apply(c.dataset.theme); });
+  });
+
+  var initial = 'sun';
+  try{ initial = localStorage.getItem('martin-theme') || 'sun'; }catch(e){}
+  apply(initial);
+})();
+</script>
 
 </body>
 </html>

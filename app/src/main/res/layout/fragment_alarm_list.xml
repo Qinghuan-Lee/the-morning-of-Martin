@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <!-- 顶部栏 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingTop="12dp"
+        android:paddingBottom="8dp">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="共 3 个闹钟"
+            android:textSize="12sp"
+            app:chipIcon="@drawable/ic_alarm"
+            app:chipBackgroundColor="?attr/colorSurface"
+            style="@style/Widget.Material3.Chip.Assist" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <!-- 更多操作 -->
+        <ImageButton
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="@drawable/bg_circle_surface"
+            android:src="@drawable/ic_more"
+            android:contentDescription="更多"
+            app:tint="?attr/colorOnSurface" />
+    </LinearLayout>
+
+    <!-- 标题 -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="闹钟"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:fontFamily="serif"
+        android:textColor="?attr/colorOnSurface"
+        android:paddingTop="14dp"
+        android:paddingBottom="4dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="到点从绑定的分类里随机抽一首开场曲"
+        android:textSize="13sp"
+        android:textColor="?attr/colorTextSecondary"
+        android:paddingBottom="14dp" />
+
+    <!-- 闹钟列表 -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_alarms"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingBottom="80dp" />
+
+    <!-- 新建闹钟 -->
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fab_add"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="新建闹钟"
+        android:textColor="@color/white"
+        app:icon="@drawable/ic_plus"
+        app:iconTint="@color/white"
+        app:backgroundTint="?attr/colorPrimary"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        style="@style/Widget.Material3.ExtendedFloatingActionButton.Primary" />
+
+</LinearLayout>
