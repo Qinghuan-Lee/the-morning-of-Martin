@@ -90,3 +90,5 @@ prompt
 9.16 cv & learning
 
 10.2 咕
+
+> 10.7 其实 不用拘泥于java/C++/python 语言不重要 为后端/全栈服务即可
